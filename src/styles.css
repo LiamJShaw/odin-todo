@@ -34,7 +34,7 @@ header {
 }
 
 .sidebar {
-    background-color: black;
+    background-color: rgb(20, 20, 20);
 
     padding: 2rem;
 }
@@ -53,21 +53,25 @@ header {
     margin-left: 1.5rem;
 }
 
-main {
+#task-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     flex-wrap: wrap;
+    flex-direction: row-reverse;
     gap: 1rem;
 
     padding: 5rem;
 }
 
 /* Individual tasks */
-.task {
+.task,
+.new-task {
+    flex: 0 1 31%;
     display: flex;
     flex-direction: column;
     max-width: 31%;
-    min-width: 300px;
+    min-width: 30rem;
+    
 
     padding: 1rem;
 
@@ -94,6 +98,27 @@ main {
     font-size: 1.5rem;
 
 }
+
+/* New task button */
+
+.new-task {
+    border: 10px black dashed;
+    background: none;
+
+    display: flex;
+    place-content: center;
+    text-align: center;
+
+    font-size: 10rem;
+    color: black;
+
+    user-select: none;
+}
+
+.new-task p {
+    
+}
+
 footer {
     grid-column: 1 / 3;
 
