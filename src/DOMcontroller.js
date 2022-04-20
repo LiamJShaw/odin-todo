@@ -2,7 +2,7 @@ const taskContainer = document.getElementById("task-container");
 
 export function clearTaskContainer() {
     taskContainer.innerHTML = "";
-    createNewTaskButton()
+    createNewTaskButton();
 }
 
 export function addTaskToContainer(task) {

@@ -45,8 +45,14 @@ header {
 }
 
 .sidebar .links ul li {
+    display: flex;
+    gap: 1rem;
     margin: 0 0 1rem 0;
     
+}
+
+.sidebar .links ul li i {
+    /* width: 2rem; */
 }
 
 .sidebar .project-list {
@@ -54,28 +60,35 @@ header {
 }
 
 #task-container {
-    display: flex;
-    justify-content: flex-end;
+    /* display: flex;
+    justify-content: flex-start;
     flex-wrap: wrap;
-    flex-direction: row-reverse;
-    gap: 1rem;
+    gap: 1rem; */
 
     padding: 5rem;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 1rem;
 }
 
 /* Individual tasks */
 .task,
 .new-task {
-    flex: 0 1 31%;
+    /* flex: 0 1 31%;
     display: flex;
     flex-direction: column;
     max-width: 31%;
-    min-width: 30rem;
+    min-width: 30rem; */
     
-
     padding: 1rem;
 
     background-color: black;
+
+    display: grid;
+    grid-template-rows: 1fr 3fr 1fr;
+
 }
 
 .task .title {
@@ -122,14 +135,27 @@ header {
 footer {
     grid-column: 1 / 3;
 
-    background-color: black;
-    color: grey;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
 
-    text-align: center;
+    background-color: black;
+    color: rgb(215, 215, 215);
+
+}
+
+footer a {
+    color: inherit;
+    text-decoration: none;
 }
 
 @media (max-width: 500px) {
-    .sidebar {
+    .text {
         display: none;
+    }
+
+    .sidebar {
+        max-width: 25vw;
     }
 }
