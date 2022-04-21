@@ -1,5 +1,3 @@
-// import { newTask } from "./task"; 
-
 const taskLists = [
     {
         id: "default",
@@ -31,7 +29,6 @@ export function newTaskList(id) {
 }
 
 export function getTasks(taskListID="default") {
-
     let taskList = getTaskLists().filter(taskList => {
 
         return taskList.id === taskListID;
@@ -41,6 +38,10 @@ export function getTasks(taskListID="default") {
 
 }
 
-export function addTask(task, taskListID="default") {
+export function addTaskToTaskList(task, taskListID="default") {
+    const taskListToAddTo = getTaskLists().filter(taskList => {
+        return taskList.id === taskListID;
+    })
 
+    taskListToAddTo[0].tasks.push(task);
 }

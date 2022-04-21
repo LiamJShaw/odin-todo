@@ -38,7 +38,10 @@ export function addTaskListToContainer(taskList) {
     });
 }
 
-function createNewTaskButton() {
+
+// Buttons
+
+export function createNewTaskButton() {
     const newTaskButton = document.createElement("div");
     newTaskButton.classList.add("new-task");
 
@@ -48,4 +51,56 @@ function createNewTaskButton() {
     newTaskButton.append(addSign);
 
     taskContainer.append(newTaskButton);
+
+    newTaskButton.addEventListener("click", () => {
+        newTaskButton.remove();
+        newTaskInput();
+    })
+}
+
+function newTaskInput() {
+    const addTaskContainer = document.createElement("div");
+    addTaskContainer.classList.add("new-task-input");
+
+    const taskTitleInput = document.createElement("input");
+    taskTitleInput.type = "text";
+    taskTitleInput.classList.add("new-task-title");
+    addTaskContainer.append(taskTitleInput);
+
+    const buttonsContainer = document.createElement("div");
+    buttonsContainer.classList.add("buttons");
+    addTaskContainer.append(buttonsContainer);
+
+    buttonsContainer.append(newAddTaskButton());
+    buttonsContainer.append(newCancelAddTaskButton());
+    
+    taskContainer.append(addTaskContainer);
+}
+
+function newAddTaskButton() {
+    const addTaskButton = document.createElement("button");
+    addTaskButton.classList.add("add-button");
+    addTaskButton.textContent = "Add";
+
+    addTaskButton.addEventListener("click", () => {
+        const task = newTask();
+        addTaskToTaskList(task);
+        addTaskToContainer(task);
+    })
+
+    return addTaskButton;
+}
+
+function newCancelAddTaskButton() {
+    const cancelAddTaskButton = document.createElement("button");
+    cancelAddTaskButton.classList.add("cancel-button");
+    cancelAddTaskButton.textContent = "Cancel";
+
+    cancelAddTaskButton.addEventListener("click", () => {
+        createNewTaskButton();
+
+        document.querySelector(".new-task-input").remove();
+    })
+
+    return cancelAddTaskButton;
 }
