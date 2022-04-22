@@ -1,4 +1,4 @@
-export function newTask(title="Test", details="Lorem ipsum", dueDate = new Date(), priority = "normal") {
+export function newTask(title, details="Lorem ipsum", dueDate = new Date(), priority = "normal") {
     return {
         title,
         details,

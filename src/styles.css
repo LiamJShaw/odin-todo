@@ -188,6 +188,10 @@ header .title-logo {
     font-weight: bold;
 }
 
+.new-task-input .buttons .cancel-button {
+    background-color: rgb(20, 20, 20);
+}
+
 .new-task.input .buttons button:hover {
     background-color: rgb(23, 23, 23);
 }
