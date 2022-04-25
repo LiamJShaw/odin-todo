@@ -15,24 +15,59 @@ export function addTaskToContainer(task) {
     const taskCard = document.createElement("div");
     taskCard.classList.add("task");
 
+    // Completed checkbox
+    const completedCheckbox = document.createElement("input");
+    completedCheckbox.type = "checkbox";
+    completedCheckbox.classList.add("completed");
+    completedCheckbox.checked = task.complete;
+    taskCard.append(completedCheckbox);
+
     // Title
     const title = document.createElement("h3");
     title.classList.add("title");
     title.textContent = task.title;
     taskCard.append(title);
 
-    // Details
-    const details = document.createElement("p");
-    details.classList.add("details");
-    details.textContent = task.details;
-    taskCard.append(details);
+    // // Show due date if it exists
+    // Check task.dueDate is not null
+    // if true, show
 
-    // Due date
-    const dueDate = document.createElement("input");
-    dueDate.classList.add("due");
-    dueDate.type = "date";
-    dueDate.textContent = task.dueDate;
-    taskCard.append(dueDate);
+    // Edit task button
+    const editButton = document.createElement("button");
+    editButton.classList.add("edit");
+    
+    const editIcon = document.createElement("i");
+    editIcon.classList.add("fa-solid");
+    editIcon.classList.add("fa-pencil");
+    editButton.append(editIcon);
+
+    taskCard.append(editButton);
+
+    // Delete task button
+    const deleteButton = document.createElement("button");
+    deleteButton.classList.add("delete");
+    
+    const deleteIcon = document.createElement("i");
+    deleteIcon.classList.add("fa-solid");
+    deleteIcon.classList.add("fa-trash");
+    deleteButton.append(deleteIcon);
+
+    taskCard.append(deleteButton);
+
+    // The below is going into the task modal soon
+
+    // // Details
+    // const details = document.createElement("p");
+    // details.classList.add("details");
+    // details.textContent = task.details;
+    // taskCard.append(details);
+
+    // // Due date
+    // const dueDate = document.createElement("input");
+    // dueDate.classList.add("due");
+    // dueDate.type = "date";
+    // dueDate.textContent = task.dueDate;
+    // taskCard.append(dueDate);
     
 
     taskContainer.append(taskCard);
@@ -89,13 +124,9 @@ function newAddTaskButton() {
     addTaskButton.textContent = "Add";
 
     addTaskButton.addEventListener("click", () => {
-        console.log("Task lists: ");
-        console.log(getTaskLists());
-
         const titleUserInput = document.querySelector(".new-task-title");
         
         const task = newTask(titleUserInput.value);
-        console.log(titleUserInput);
 
         addTaskToTaskList(task);
         addTaskToContainer(task);
