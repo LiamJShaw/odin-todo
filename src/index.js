@@ -151,4 +151,8 @@ function newCancelAddTaskButton() {
     return cancelAddTaskButton;
 }
 
+// Page load function? IIFE
+
+// Load tasks from storage if there are any
+// Display a "new task" button
 createNewTaskButton();
