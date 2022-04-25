@@ -80,10 +80,6 @@ header .title-logo {
 }
 
 #task-container {
-    /* display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: 1rem; */
 
     padding: 5rem;
 
@@ -232,6 +228,9 @@ footer a {
     .container {    
         grid-template-columns: 1fr;
         grid-template-rows: 1fr 1fr 9fr 1.5rem;
-    
     }
+
+    #task-container {
+        padding: 0.5rem;
+    }    
 }
