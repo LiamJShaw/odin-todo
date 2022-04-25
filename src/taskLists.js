@@ -1,4 +1,4 @@
-const taskLists = [
+let taskLists = [
     {
         id: "default",
         tasks: [
@@ -12,10 +12,10 @@ const taskLists = [
     {
         id: "test",
         tasks: [
-            { title: "test",
-            description: "test",
-            dueDate: "test",
-            priority: "test" }
+            { title: "title",
+            description: "description",
+            dueDate: "dueDate",
+            priority: "priority" }
         ]
     }
 ];
@@ -34,8 +34,7 @@ export function getTasks(taskListID="default") {
         return taskList.id === taskListID;
     })
 
-    console.log(taskList);
-
+    return taskList[0].tasks;
 }
 
 export function addTaskToTaskList(task, taskListID="default") {
@@ -44,4 +43,8 @@ export function addTaskToTaskList(task, taskListID="default") {
     })
 
     taskListToAddTo[0].tasks.push(task);
+}
+
+export function loadTaskLists(loadedTaskLists) {
+    taskLists = loadedTaskLists;
 }

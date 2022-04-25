@@ -2,7 +2,8 @@ import '@fortawesome/fontawesome-free/js/all';
 import './styles.css';
 
 import { newTask } from './task';
-import { newTaskList, getTaskLists, getTasks, addTaskToTaskList } from './taskLists';
+import { newTaskList, getTaskLists, getTasks, addTaskToTaskList, loadTaskLists } from './taskLists';
+import { saveTasks, loadTasks } from './storage';
 
 const taskContainer = document.getElementById("task-container");
 
@@ -12,6 +13,9 @@ export function clearTaskContainer() {
 }
 
 export function addTaskToContainer(task) {
+
+    console.log(task);
+
     const taskCard = document.createElement("div");
     taskCard.classList.add("task");
 
@@ -74,8 +78,9 @@ export function addTaskToContainer(task) {
 }
 
 export function addTaskListToContainer(taskList) {
-    taskList.array.forEach(task => {
-        addTask(task);        
+
+    Object.values(taskList).forEach(task => {
+        addTaskToContainer(task);
     });
 }
 
@@ -130,6 +135,7 @@ function newAddTaskButton() {
 
         addTaskToTaskList(task);
         addTaskToContainer(task);
+        saveTasks(getTaskLists());
 
         document.querySelector(".new-task-input").remove();
         createNewTaskButton();
@@ -151,8 +157,20 @@ function newCancelAddTaskButton() {
     return cancelAddTaskButton;
 }
 
-// Page load function? IIFE
+// This loads when the page does
+(() => {
 
-// Load tasks from storage if there are any
-// Display a "new task" button
-createNewTaskButton();
+    // Load tasks from storage if there are any
+    let loadedTaskLists = loadTasks();
+
+    if (loadedTaskLists !== null) {
+        // Take loaded tasks and put them in the task lists array
+        loadTaskLists(loadedTaskLists);
+
+        // Add the default task list to the DOM
+        addTaskListToContainer(getTasks());
+    }
+
+    // Display a "new task" button
+    createNewTaskButton();
+})();

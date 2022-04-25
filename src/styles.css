@@ -107,7 +107,7 @@ header .title-logo {
 .task .title {
     flex: 1;
     padding: 1rem 1rem 0.5rem 1rem;
-    border-bottom: 1px solid grey;
+    /* border-bottom: 1px solid grey; */
 }
 
 .task button {
