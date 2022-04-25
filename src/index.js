@@ -2,7 +2,9 @@ import '@fortawesome/fontawesome-free/js/all';
 import './styles.css';
 
 import { newTask } from './task';
-import { newTaskList, getTaskLists, getTasks, addTaskToTaskList, loadTaskLists } from './taskLists';
+import { newTaskList, getTaskLists, 
+         getTasks, addTaskToTaskList, 
+         loadTaskLists, deleteTaskFromTaskList } from './taskLists';
 import { saveTasks, loadTasks } from './storage';
 
 const taskContainer = document.getElementById("task-container");
@@ -13,8 +15,6 @@ export function clearTaskContainer() {
 }
 
 export function addTaskToContainer(task) {
-
-    console.log(task);
 
     const taskCard = document.createElement("div");
     taskCard.classList.add("task");
@@ -37,26 +37,10 @@ export function addTaskToContainer(task) {
     // if true, show
 
     // Edit task button
-    const editButton = document.createElement("button");
-    editButton.classList.add("edit");
-    
-    const editIcon = document.createElement("i");
-    editIcon.classList.add("fa-solid");
-    editIcon.classList.add("fa-pencil");
-    editButton.append(editIcon);
-
-    taskCard.append(editButton);
+    taskCard.append(newEditButton());
 
     // Delete task button
-    const deleteButton = document.createElement("button");
-    deleteButton.classList.add("delete");
-    
-    const deleteIcon = document.createElement("i");
-    deleteIcon.classList.add("fa-solid");
-    deleteIcon.classList.add("fa-trash");
-    deleteButton.append(deleteIcon);
-
-    taskCard.append(deleteButton);
+    taskCard.append(newDeleteButton());
 
     // The below is going into the task modal soon
 
@@ -73,6 +57,11 @@ export function addTaskToContainer(task) {
     // dueDate.textContent = task.dueDate;
     // taskCard.append(dueDate);
     
+
+
+    // Add id and taskList to taskContainer so that the underlying task can be referenced
+    taskCard.setAttribute('data-id', task.id);
+    taskCard.setAttribute('data-id', task.id);
 
     taskContainer.append(taskCard);
 }
@@ -157,7 +146,41 @@ function newCancelAddTaskButton() {
     return cancelAddTaskButton;
 }
 
-// This loads when the page does
+function newEditButton() {
+    const editButton = document.createElement("button");
+    editButton.classList.add("edit");
+    
+    const editIcon = document.createElement("i");
+    editIcon.classList.add("fa-solid");
+    editIcon.classList.add("fa-pencil");
+    editButton.append(editIcon);
+
+    editButton.addEventListener("click", () => {
+        console.log(editButton);
+    })
+
+    return editButton;
+}
+
+function newDeleteButton() {
+
+    const deleteButton = document.createElement("button");
+    deleteButton.classList.add("delete");
+    
+    const deleteIcon = document.createElement("i");
+    deleteIcon.classList.add("fa-solid");
+    deleteIcon.classList.add("fa-trash");
+    deleteButton.append(deleteIcon);
+
+    deleteButton.addEventListener("click", () => {
+        deleteTaskFromTaskList(deleteButton.parentElement.getAttribute("data-id"));
+        deleteButton.parentElement.remove();
+    })
+
+    return deleteButton;
+}
+
+// On page load
 (() => {
 
     // Load tasks from storage if there are any

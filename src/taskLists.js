@@ -1,22 +1,7 @@
 let taskLists = [
     {
         id: "default",
-        tasks: [
-            { title: "title",
-            description: "description",
-            dueDate: "dueDate",
-            priority: "priority" }
-        ]
-    },
-
-    {
-        id: "test",
-        tasks: [
-            { title: "title",
-            description: "description",
-            dueDate: "dueDate",
-            priority: "priority" }
-        ]
+        tasks: []
     }
 ];
 
@@ -29,9 +14,9 @@ export function newTaskList(id) {
 }
 
 export function getTasks(taskListID="default") {
-    let taskList = getTaskLists().filter(taskList => {
+    let taskList = getTaskLists().filter(task => {
 
-        return taskList.id === taskListID;
+        return task.id === taskListID;
     })
 
     return taskList[0].tasks;
@@ -42,9 +27,29 @@ export function addTaskToTaskList(task, taskListID="default") {
         return taskList.id === taskListID;
     })
 
+    task.id = taskListToAddTo[0].tasks.length;
+    console.log(task.id);
     taskListToAddTo[0].tasks.push(task);
 }
 
 export function loadTaskLists(loadedTaskLists) {
     taskLists = loadedTaskLists;
 }
+
+export function deleteTaskFromTaskList(taskID, taskList="default") {
+    console.log("Deleting task: " + taskID);
+}
+
+// These two could have a helper/abstracted function that gets any tasks within a date range 
+export function getTodayTasks() {
+    // Get all task lists
+    // Add all tasks from all task lists to array
+    // Filter that array to only the tasks with a due date of today
+}
+
+export function getThisWeekTasks() {
+    // Get all task lists
+    // Add all tasks from all task lists to array
+    // Filter that array to only the tasks with a due date of this week
+}
+
