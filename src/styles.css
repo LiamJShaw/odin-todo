@@ -69,6 +69,10 @@ header .title-logo {
     cursor: pointer;
 }
 
+.sidebar .links ul li > * {
+    pointer-events: none;
+}
+
 .sidebar .links ul li.active,
 .sidebar .links ul li:hover {
     background-color: black;
