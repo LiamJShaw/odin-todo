@@ -110,6 +110,7 @@ function newTaskInput() {
     buttonsContainer.append(newCancelAddTaskButton());
     
     taskContainer.append(addTaskContainer);
+    taskTitleInput.focus();
 }
 
 function newAddTaskButton() {
@@ -175,6 +176,7 @@ function newDeleteButton() {
     deleteButton.addEventListener("click", () => {
         deleteTaskFromTaskList(deleteButton.parentElement.getAttribute("data-id"));
         deleteButton.parentElement.remove();
+        saveTasks(getTaskLists());
     })
 
     return deleteButton;
