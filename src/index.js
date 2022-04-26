@@ -55,6 +55,8 @@ function loadTaskList(taskList="default") {
 
 function addTaskListToContainer(taskList="default") {
 
+    console.log(taskList);
+
     let index = 0;
 
     Object.values(taskList).forEach(task => {
@@ -166,10 +168,10 @@ function newDeleteButton() {
     deleteButton.addEventListener("click", () => {
         deleteTaskFromTaskList(deleteButton.parentElement.getAttribute("data-id"), taskContainer.getAttribute("data-tasklist"));
         clearTaskContainer();
+        
         addTaskListToContainer(getTasks(taskContainer.getAttribute("data-tasklist")));
         saveTasks(getTaskLists());
 
-        // Display a "new task" button
         createNewTaskButton();
     })
 
@@ -185,7 +187,21 @@ const projectLinks = links.querySelector(".project-list");
 links.addEventListener("click", e => {
     changeActiveMenuItem(e.target);
 
+    // Project links
+    const taskList = e.target.getAttribute("data-tasklist");
+    if (taskList) {
+        clearTaskContainer();
+        taskContainer.setAttribute("data-tasklist", taskList);
+        addTaskListToContainer(getTasks(taskList));
+        createNewTaskButton();
+    }
+
+    // Main links
     switch (e.target.id) {
+
+        // Catching the clicks directly on project-list
+        case "":
+            break;
 
         case "home":
             clearTaskContainer();
@@ -194,10 +210,16 @@ links.addEventListener("click", e => {
             break;
 
         case "today":
+        case "this-week":
             clearTaskContainer();
+            taskContainer.textContent = "No tasks to show";
             getTodayTasks();
             break;
-    }
+
+        case "projects":
+            // Load project cards page
+            break;
+        }
 })
 
 function changeActiveMenuItem(menuItem) {
@@ -221,17 +243,42 @@ function changeActiveMenuItem(menuItem) {
     menuItem.classList.add("active");
 }
 
-function addProjectToProjectList(taskList) {
+function addProjectToProjectList(project) {
     const projectListEntry = document.createElement("li");
-    addTaskContainer.classList.add("new-task-input");
+    projectListEntry.setAttribute("data-tasklist", project.id);
+
+    const icon = document.createElement("i");
+    icon.className = "fa-solid fa-list-check";
+    projectListEntry.append(icon);
+
+    const projectTitle = document.createElement("p");
+    projectTitle.textContent = project.id;
+    projectListEntry.append(projectTitle);
+
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "X";
+    deleteButton.classList.add("project-delete-button");
+    projectListEntry.append(deleteButton);
+
+    projectLinks.append(projectListEntry);
 }
 
-function loadProjectLists() {
+function loadProjectList() {
+
+    // Clear currently loaded project list
+    projectLinks.innerHTML = "";
+
     // Get all task lists
-    // Remove default from list
+    const projectLists = getTaskLists();
+    console.log(projectLists);
+
     // Create a button for each taskList with
-    //      ID as .textContent
-    //      ID as data-tasklist attr
+    projectLists.forEach(project => {
+        if (project.id !== "default") {
+            addProjectToProjectList(project);
+        } 
+    })
+
 }
 
 function createNewProjectButton() {
@@ -281,13 +328,14 @@ function newAddProjectButton() {
     addProjectButton.classList.add("add-button");
     addProjectButton.textContent = "Add";
 
-    addProjectButton.addEventListener("click", () => {
+    addProjectButton.addEventListener("click", e => {
+
         const titleUserInput = document.querySelector(".new-project-title");
 
         newTaskList(titleUserInput.value);
         saveTasks(getTaskLists());
-
-        // createNewProjectButton();
+        loadProjectList();
+        createNewProjectButton();
     })
 
     return addProjectButton;
@@ -319,6 +367,9 @@ function newCancelAddProjectButton() {
 
         // Add the default task list to the DOM
         loadTaskList();
+
+        // Load any lists that aren't the default
+        loadProjectList();
     }
 
     // Display a "new task" button
@@ -326,7 +377,4 @@ function newCancelAddProjectButton() {
 
     // Display a "new project" button
     createNewProjectButton();
-
-    // Load tasklists that aren't default into the sidebar
-
 })();

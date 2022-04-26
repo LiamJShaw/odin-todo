@@ -21,7 +21,7 @@ body {
 
     display: grid;
     grid-template-columns: 1fr 6fr;
-    grid-template-rows: 1fr 9fr 1.5rem;
+    grid-template-rows: 8rem 9fr 1.5rem;
 }
 
 header {
@@ -49,6 +49,11 @@ header .title-logo {
     background-color: rgb(20, 20, 20);
 
     padding: 2rem;
+}
+
+.sidebar .links {
+    position: sticky;
+    top: 3rem;
 }
 
 .sidebar .links ul {
@@ -119,9 +124,59 @@ header .title-logo {
 }
 
 /* New project button */
+.new-project-input {
+    display: flex;
+    flex-direction: column;
+}
 
-.new-project {
+.new-project-input .buttons {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
     
+    padding: 1rem;
+}
+
+.new-project-input .buttons button {
+    padding: 0.5rem 0.8rem;
+
+    background-color: black;
+    color: white;
+    border-style: none;
+    border-radius: 10px;
+    font-size: large;
+    font-weight: bold;
+    
+    cursor: pointer;
+}
+
+.new-project-input .buttons .cancel-button {
+    background-color: rgb(4, 4, 4);
+}
+
+.project-delete-button {
+    background-color: none;
+    border: none;
+    margin-left: auto;
+
+    color: red;
+    font-weight: 900;
+
+    display: none;
+
+    padding: 0.5rem;
+}
+
+.project-delete-button:hover {
+    display: block;
+}
+
+.new-project-title {
+    background-color: black;
+    color: white;
+    /* font-weight: bold; */
+    border-style: none;
+    text-align: left;
 }
 
 /* New task button */
