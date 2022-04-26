@@ -4,7 +4,8 @@ import './styles.css';
 import { newTask } from './task';
 import { newTaskList, getTaskLists, 
          getTasks, addTaskToTaskList, 
-         loadTaskLists, deleteTaskFromTaskList } from './taskLists';
+         loadTaskLists, deleteTaskFromTaskList,
+         getTodayTasks, getThisWeekTasks } from './taskLists';
 import { saveTasks, loadTasks } from './storage';
 
 const taskContainer = document.getElementById("task-container");
@@ -226,3 +227,46 @@ function newDeleteButton() {
 // });
 
 // look for clicks and check for these buttons?
+
+const links = document.querySelector(".links");
+const mainLinks = links.querySelector(".main");
+const projectLinks = links.querySelector(".project-list");
+
+links.addEventListener("click", e => {
+    changeActiveMenuItem(e.target);
+
+    switch (e.target.id) {
+
+        case "home":
+            clearTaskContainer();
+            addTaskListToContainer(getTasks());
+            createNewTaskButton();
+            break;
+
+        case "today":
+            clearTaskContainer();
+            getTodayTasks();
+            break;
+    }
+})
+
+function changeActiveMenuItem(menuItem) {
+
+    Array.from(mainLinks.children).forEach(node => {
+        node.classList.remove("active");
+    })
+
+    // There has to be a way to include this in the above list
+    Array.from(projectLinks.children).forEach(node => {
+        node.classList.remove("active");
+    })
+
+    // Perhaps there is a better way to capture these events
+    if (menuItem.nodeName === "LI") {
+
+    } else {
+        menuItem = menuItem.parentElement;
+    }
+
+    menuItem.classList.add("active");
+}
