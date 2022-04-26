@@ -10,24 +10,6 @@ import { saveTasks, loadTasks } from './storage';
 
 const taskContainer = document.getElementById("task-container");
 
-// On page load
-(() => {
-
-    // Load tasks from storage if there are any
-    let loadedTaskLists = loadTasks();
-
-    if (loadedTaskLists !== null) {
-        // Take loaded tasks and put them in the task lists array
-        loadTaskLists(loadedTaskLists);
-
-        // Add the default task list to the DOM
-        loadTaskList();
-    }
-
-    // Display a "new task" button
-    createNewTaskButton();
-})();
-
 function clearTaskContainer() {
     taskContainer.innerHTML = "";
 }
@@ -60,25 +42,15 @@ function addTaskToContainer(task, index) {
     // Delete task button
     taskCard.append(newDeleteButton());
 
-    // The below is going into the task modal soon
-
-    // // Details
-    // const details = document.createElement("p");
-    // details.classList.add("details");
-    // details.textContent = task.details;
-    // taskCard.append(details);
-
-    // // Due date
-    // const dueDate = document.createElement("input");
-    // dueDate.classList.add("due");
-    // dueDate.type = "date";
-    // dueDate.textContent = task.dueDate;
-    // taskCard.append(dueDate);
-    
-    // Add id and taskList to taskContainer so that the underlying task can be referenced
+    // Add id so that the underlying task can be referenced
     taskCard.setAttribute('data-id', index);
 
     taskContainer.append(taskCard);
+}
+
+function loadTaskList(taskList="default") {
+    taskContainer.setAttribute("data-tasklist", taskList);
+    addTaskListToContainer(getTasks(taskList));
 }
 
 function addTaskListToContainer(taskList="default") {
@@ -89,11 +61,6 @@ function addTaskListToContainer(taskList="default") {
         addTaskToContainer(task, index);
         index++;
     });
-}
-
-function loadTaskList(taskList="default") {
-    taskContainer.setAttribute("data-tasklist", taskList);
-    addTaskListToContainer(getTasks(taskList));
 }
 
 
@@ -210,24 +177,7 @@ function newDeleteButton() {
 }
 
 
-
 // Navigation Buttons
-
-// const todayButton = document.querySelector(".today");
-
-// todayButton.addEventListener("click", () => {
-//     // Change active state on today button
-//     todayButton.classList.add("active");
-// });
-
-// const thisWeekButton = document.querySelector(".this-week");
-
-// thisWeekButton.addEventListener("click", () => {
-//     thisWeekButton.classList.add("active");
-// });
-
-// look for clicks and check for these buttons?
-
 const links = document.querySelector(".links");
 const mainLinks = links.querySelector(".main");
 const projectLinks = links.querySelector(".project-list");
@@ -270,3 +220,113 @@ function changeActiveMenuItem(menuItem) {
 
     menuItem.classList.add("active");
 }
+
+function addProjectToProjectList(taskList) {
+    const projectListEntry = document.createElement("li");
+    addTaskContainer.classList.add("new-task-input");
+}
+
+function loadProjectLists() {
+    // Get all task lists
+    // Remove default from list
+    // Create a button for each taskList with
+    //      ID as .textContent
+    //      ID as data-tasklist attr
+}
+
+function createNewProjectButton() {
+    const newProjectButton = document.createElement("li");
+    newProjectButton.classList.add("new-project");
+
+    const icon = document.createElement("i");
+    icon.className = "fa-solid fa-folder-plus";
+    newProjectButton.append(icon);
+
+    const newProjectText = document.createElement("p");
+    newProjectText.textContent = "New Project...";
+
+    newProjectButton.append(newProjectText);
+
+    projectLinks.append(newProjectButton);
+
+    newProjectButton.addEventListener("click", () => {
+        newProjectButton.remove();
+        createNewProjectInput();
+    })
+}
+
+function createNewProjectInput() {
+
+    const addProjectContainer = document.createElement("div");
+    addProjectContainer.classList.add("new-project-input");
+
+    const projectTitleInput = document.createElement("input");
+    projectTitleInput.type = "text";
+    projectTitleInput.classList.add("new-project-title");
+    addProjectContainer.append(projectTitleInput);
+
+    const buttonsContainer = document.createElement("div");
+    buttonsContainer.classList.add("buttons");
+    addProjectContainer.append(buttonsContainer);
+
+    buttonsContainer.append(newAddProjectButton());
+    buttonsContainer.append(newCancelAddProjectButton());
+    
+    projectLinks.append(addProjectContainer);
+    projectTitleInput.focus();
+}
+
+function newAddProjectButton() {
+    const addProjectButton = document.createElement("button");
+    addProjectButton.classList.add("add-button");
+    addProjectButton.textContent = "Add";
+
+    addProjectButton.addEventListener("click", () => {
+        const titleUserInput = document.querySelector(".new-project-title");
+
+        newTaskList(titleUserInput.value);
+        saveTasks(getTaskLists());
+
+        // createNewProjectButton();
+    })
+
+    return addProjectButton;
+}
+
+function newCancelAddProjectButton() {
+    const cancelAddProjectButton = document.createElement("button");
+    cancelAddProjectButton.classList.add("cancel-button");
+    cancelAddProjectButton.textContent = "Cancel";
+
+    cancelAddProjectButton.addEventListener("click", () => {
+        createNewProjectButton();
+        document.querySelector(".new-project-input").remove();
+    })
+
+    return cancelAddProjectButton;
+}
+
+
+// On page load
+(() => {
+
+    // Load tasks from storage if there are any
+    let loadedTaskLists = loadTasks();
+
+    if (loadedTaskLists !== null) {
+        // Take loaded tasks and put them in the task lists array
+        loadTaskLists(loadedTaskLists);
+
+        // Add the default task list to the DOM
+        loadTaskList();
+    }
+
+    // Display a "new task" button
+    createNewTaskButton();
+
+    // Display a "new project" button
+    createNewProjectButton();
+
+    // Load tasklists that aren't default into the sidebar
+
+})();
