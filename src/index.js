@@ -9,12 +9,29 @@ import { saveTasks, loadTasks } from './storage';
 
 const taskContainer = document.getElementById("task-container");
 
-export function clearTaskContainer() {
-    taskContainer.innerHTML = "";
+// On page load
+(() => {
+
+    // Load tasks from storage if there are any
+    let loadedTaskLists = loadTasks();
+
+    if (loadedTaskLists !== null) {
+        // Take loaded tasks and put them in the task lists array
+        loadTaskLists(loadedTaskLists);
+
+        // Add the default task list to the DOM
+        loadTaskList();
+    }
+
+    // Display a "new task" button
     createNewTaskButton();
+})();
+
+function clearTaskContainer() {
+    taskContainer.innerHTML = "";
 }
 
-export function addTaskToContainer(task) {
+function addTaskToContainer(task, index) {
 
     const taskCard = document.createElement("div");
     taskCard.classList.add("task");
@@ -57,26 +74,31 @@ export function addTaskToContainer(task) {
     // dueDate.textContent = task.dueDate;
     // taskCard.append(dueDate);
     
-
-
     // Add id and taskList to taskContainer so that the underlying task can be referenced
-    taskCard.setAttribute('data-id', task.id);
-    taskCard.setAttribute('data-id', task.id);
+    taskCard.setAttribute('data-id', index);
 
     taskContainer.append(taskCard);
 }
 
-export function addTaskListToContainer(taskList) {
+function addTaskListToContainer(taskList="default") {
+
+    let index = 0;
 
     Object.values(taskList).forEach(task => {
-        addTaskToContainer(task);
+        addTaskToContainer(task, index);
+        index++;
     });
+}
+
+function loadTaskList(taskList="default") {
+    taskContainer.setAttribute("data-tasklist", taskList);
+    addTaskListToContainer(getTasks(taskList));
 }
 
 
 // Buttons
 
-export function createNewTaskButton() {
+function createNewTaskButton() {
     const newTaskButton = document.createElement("div");
     newTaskButton.classList.add("new-task");
 
@@ -123,11 +145,11 @@ function newAddTaskButton() {
         
         const task = newTask(titleUserInput.value);
 
-        addTaskToTaskList(task);
-        addTaskToContainer(task);
+        addTaskToTaskList(task, taskContainer.getAttribute("data-tasklist"));
+        clearTaskContainer();
+        addTaskListToContainer(getTasks(taskContainer.getAttribute("data-tasklist")));
         saveTasks(getTaskLists());
 
-        document.querySelector(".new-task-input").remove();
         createNewTaskButton();
     })
 
@@ -174,28 +196,33 @@ function newDeleteButton() {
     deleteButton.append(deleteIcon);
 
     deleteButton.addEventListener("click", () => {
-        deleteTaskFromTaskList(deleteButton.parentElement.getAttribute("data-id"));
-        deleteButton.parentElement.remove();
+        deleteTaskFromTaskList(deleteButton.parentElement.getAttribute("data-id"), taskContainer.getAttribute("data-tasklist"));
+        clearTaskContainer();
+        addTaskListToContainer(getTasks(taskContainer.getAttribute("data-tasklist")));
         saveTasks(getTaskLists());
+
+        // Display a "new task" button
+        createNewTaskButton();
     })
 
     return deleteButton;
 }
 
-// On page load
-(() => {
 
-    // Load tasks from storage if there are any
-    let loadedTaskLists = loadTasks();
 
-    if (loadedTaskLists !== null) {
-        // Take loaded tasks and put them in the task lists array
-        loadTaskLists(loadedTaskLists);
+// Navigation Buttons
 
-        // Add the default task list to the DOM
-        addTaskListToContainer(getTasks());
-    }
+// const todayButton = document.querySelector(".today");
 
-    // Display a "new task" button
-    createNewTaskButton();
-})();
+// todayButton.addEventListener("click", () => {
+//     // Change active state on today button
+//     todayButton.classList.add("active");
+// });
+
+// const thisWeekButton = document.querySelector(".this-week");
+
+// thisWeekButton.addEventListener("click", () => {
+//     thisWeekButton.classList.add("active");
+// });
+
+// look for clicks and check for these buttons?

@@ -27,10 +27,6 @@ export function addTaskToTaskList(task, taskListID="default") {
         return taskList.id === taskListID;
     })
 
-    console.log(taskListToAddTo);
-
-    task.id = taskListToAddTo[0].tasks.length;
-    console.log(task.id);
     taskListToAddTo[0].tasks.push(task);
 }
 
@@ -38,17 +34,8 @@ export function loadTaskLists(loadedTaskLists) {
     taskLists = loadedTaskLists;
 }
 
-export function deleteTaskFromTaskList(taskID, taskListID="default") {
-    console.log("Deleting task: " + taskID);
-
-    const taskListToDeleteFrom = getTaskLists().filter(taskList => {
-        return taskList.id === taskListID;
-    })
-
-    console.log(taskListToDeleteFrom);
-
-    getTasks(taskListID).splice(taskListToDeleteFrom[0].tasks[taskID], 1);
-
+export function deleteTaskFromTaskList(taskIndex, taskListID="default") {
+    getTasks(taskListID).splice(taskIndex, 1);
 }
 
 // These two could have a helper/abstracted function that gets any tasks within a date range 
