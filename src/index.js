@@ -148,33 +148,12 @@ function newEditButton() {
     editButton.append(editIcon);
 
     editButton.addEventListener("click", () => {
-        console.log(editButton.parentElement.getAttribute("data-id"));
-        showEditTaskModal();
+        const tasks = getTasks(taskContainer.getAttribute("data-tasklist"));
+        const task = tasks[editButton.parentElement.getAttribute("data-id")]
+        showEditTaskModal(task);
     })
 
     return editButton;
-}
-
-function showEditTaskModal(task) {
-    createEditTaskModal(task)
-}
-
-function createEditTaskModal(task) {
-    const modalContainer = document.createElement("div");
-    modalContainer.classList.add("modal-container");
-
-    const editTaskModal = document.createElement("div");
-    editTaskModal.classList.add("task-modal");
-
-
-    // Title
-    // Description
-    // Priority
-    // Complete status
-
-    modalContainer.append(editTaskModal);
-    taskContainer.append(modalContainer);
-
 }
 
 function newDeleteButton() {
@@ -198,6 +177,82 @@ function newDeleteButton() {
     })
 
     return deleteButton;
+}
+
+// Task Edit Modal
+function showEditTaskModal(task) {
+    createEditTaskModal(task)
+}
+
+function createEditTaskModal(task) {
+    const modalContainer = document.createElement("div");
+    modalContainer.classList.add("modal-container");
+
+    const editTaskModal = document.createElement("div");
+    editTaskModal.classList.add("task-modal");
+
+    // Title
+    const editTaskTitle = document.createElement("input")
+    editTaskTitle.type = "text";
+    editTaskTitle.value = task.title;
+    editTaskModal.append(editTaskTitle);
+
+    // Description
+    const editTaskDescription = document.createElement("textarea")
+    editTaskDescription.style = "resize: none";
+    editTaskDescription.setAttribute("rows", 5);
+    editTaskDescription.value = task.details;
+    editTaskModal.append(editTaskDescription);
+
+    // Due Date
+    const editTaskDueDate = document.createElement("input");
+    editTaskDueDate.type = "date";
+    editTaskDueDate.value = task.dueDate;
+    editTaskModal.append(editTaskDueDate);
+
+    // Priority
+    // const editTaskPriority = document.createElement
+
+    // Complete status
+
+
+    // Button container
+    const buttonContainer = document.createElement("div");
+    buttonContainer.classList.add("button-container");
+    editTaskModal.append(buttonContainer);
+
+    // Save button
+    const editTaskSaveButton = document.createElement("button");
+    editTaskSaveButton.textContent = "Save";
+    buttonContainer.append(editTaskSaveButton);
+
+    editTaskSaveButton.addEventListener("click", () => {
+        
+        task.title = editTaskTitle.value;
+        task.details = editTaskDescription.value;
+        task.dueDate = editTaskDueDate.value;
+
+        clearTaskContainer();
+        loadTaskList(taskContainer.getAttribute("data-tasklist"));
+        createNewTaskButton();
+        saveTasks(getTaskLists());
+
+        modalContainer.remove();
+    })
+
+    // Cancel button
+    const editTaskCancelButton = document.createElement("button");
+    editTaskCancelButton.textContent = "Cancel";
+    buttonContainer.append(editTaskCancelButton);
+
+    editTaskCancelButton.addEventListener("click", () => {
+        modalContainer.remove();
+    })
+
+    modalContainer.append(editTaskModal);
+    taskContainer.append(modalContainer);
+
+    editTaskTitle.focus();
 }
 
 
