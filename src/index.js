@@ -2,10 +2,9 @@ import '@fortawesome/fontawesome-free/js/all';
 import './styles.css';
 
 import { newTask } from './task';
-import { newTaskList, getTaskLists, 
-         getTasks, addTaskToTaskList, 
-         loadTaskLists, deleteTaskFromTaskList,
-         getTodayTasks, getThisWeekTasks } from './taskLists';
+import { addTaskToTaskList, deleteTaskFromTaskList, getTaskLists, 
+         getTasks, getThisWeekTasks, getTodayTasks, loadTaskLists,
+         newTaskList } from './taskLists';
 import { saveTasks, loadTasks } from './storage';
 
 const taskContainer = document.getElementById("task-container");
@@ -149,10 +148,33 @@ function newEditButton() {
     editButton.append(editIcon);
 
     editButton.addEventListener("click", () => {
-        console.log(editButton);
+        console.log(editButton.parentElement.getAttribute("data-id"));
+        showEditTaskModal();
     })
 
     return editButton;
+}
+
+function showEditTaskModal(task) {
+    createEditTaskModal(task)
+}
+
+function createEditTaskModal(task) {
+    const modalContainer = document.createElement("div");
+    modalContainer.classList.add("modal-container");
+
+    const editTaskModal = document.createElement("div");
+    editTaskModal.classList.add("task-modal");
+
+
+    // Title
+    // Description
+    // Priority
+    // Complete status
+
+    modalContainer.append(editTaskModal);
+    taskContainer.append(modalContainer);
+
 }
 
 function newDeleteButton() {
@@ -281,7 +303,6 @@ function loadProjectList() {
             addProjectToProjectList(project);
         } 
     })
-
 }
 
 function createNewProjectButton() {

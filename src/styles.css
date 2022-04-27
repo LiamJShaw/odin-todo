@@ -258,6 +258,28 @@ header .title-logo {
     align-items: center;
 }
 
+/* Edit task modal */
+
+.modal-container {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.task-modal {
+    background-color: rgb(0, 0, 0);
+    border-radius: 10px;
+    margin: 10% auto;
+    padding: 1.5rem;
+    width: 50%;
+    height: 50%;
+}
+
 
 footer {
     grid-column: 1 / 3;
@@ -306,5 +328,10 @@ footer a {
 
     #task-container {
         padding: 0.5rem;
-    }    
+    }
+    
+    .task-modal {
+        width: 80%;
+        margin: 40% auto;
+    }
 }
