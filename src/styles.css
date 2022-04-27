@@ -248,6 +248,16 @@ header .title-logo {
     background-color: rgb(23, 23, 23);
 }
 
+.project-card {
+    background-color: black;
+    padding: 3rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
 
 footer {
     grid-column: 1 / 3;

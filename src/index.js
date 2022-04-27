@@ -194,6 +194,7 @@ links.addEventListener("click", e => {
         taskContainer.setAttribute("data-tasklist", taskList);
         addTaskListToContainer(getTasks(taskList));
         createNewTaskButton();
+        return;
     }
 
     // Main links
@@ -204,6 +205,8 @@ links.addEventListener("click", e => {
             break;
 
         case "home":
+            // This should probably be its own function at this point
+            e.target.setAttribute("data-tasklist", "default");
             clearTaskContainer();
             addTaskListToContainer(getTasks());
             createNewTaskButton();
@@ -217,7 +220,7 @@ links.addEventListener("click", e => {
             break;
 
         case "projects":
-            // Load project cards page
+            displayProjectCards();
             break;
         }
 })
@@ -298,7 +301,8 @@ function createNewProjectButton() {
 
     newProjectButton.addEventListener("click", () => {
         newProjectButton.remove();
-        createNewProjectInput();
+        projectLinks.append(createNewProjectInput());
+
     })
 }
 
@@ -319,8 +323,8 @@ function createNewProjectInput() {
     buttonsContainer.append(newAddProjectButton());
     buttonsContainer.append(newCancelAddProjectButton());
     
-    projectLinks.append(addProjectContainer);
     projectTitleInput.focus();
+    return addProjectContainer;
 }
 
 function newAddProjectButton() {
@@ -335,6 +339,10 @@ function newAddProjectButton() {
         newTaskList(titleUserInput.value);
         saveTasks(getTaskLists());
         loadProjectList();
+        addProjectButton.parentElement.parentElement.remove();
+
+        displayProjectCards();
+
         createNewProjectButton();
     })
 
@@ -352,6 +360,77 @@ function newCancelAddProjectButton() {
     })
 
     return cancelAddProjectButton;
+}
+
+// Project cards page
+
+function displayProjectCards() {
+
+    clearTaskContainer();
+
+    // Get all task lists
+    const taskLists = getTaskLists();
+
+    // Create and append each as a card 
+    taskLists.forEach(taskList => {
+        if (taskList.id !== "default") {
+            AddProjectCardToContainer(taskList);
+        }
+    })
+
+    createNewProjectCardButton();
+}
+
+function AddProjectCardToContainer(project) {
+
+    const projectCard = document.createElement("div");
+    projectCard.classList.add("project-card");
+    projectCard.setAttribute("data-project", project.id)
+
+    // Title
+    const projectTitle = document.createElement("h2");
+    projectTitle.textContent = project.id;
+    projectCard.append(projectTitle);
+
+    // taskCount
+    const taskCount = document.createElement("p");
+    taskCount.textContent = `Tasks: ${project.tasks.length}`;
+    projectCard.append(taskCount);
+
+    // Completed?
+    
+    // Delete button
+    const deleteButton = document.createElement("button");
+
+    projectCard.addEventListener("click", e => {
+        const project = e.target.getAttribute("data-project");
+
+        if (project) {
+            clearTaskContainer();
+            taskContainer.setAttribute("data-tasklist", project);
+            addTaskListToContainer(getTasks(project));
+            createNewTaskButton();
+        }
+    })
+
+    taskContainer.append(projectCard);
+}
+
+function createNewProjectCardButton() {
+    const newProjectButton = document.createElement("div");
+    newProjectButton.classList.add("new-task");
+
+    const addSign = document.createElement("p");
+    addSign.textContent = "+";
+
+    newProjectButton.append(addSign);
+
+    taskContainer.append(newProjectButton);
+
+    newProjectButton.addEventListener("click", () => {
+        newProjectButton.remove();
+        taskContainer.append(createNewProjectInput());
+    })
 }
 
 
